@@ -1,6 +1,6 @@
 public class Shop {
 
-    private void notTestedMethod() {
+    public void notTestedMethod() {
         int i = 0;
     }
 
