@@ -9,29 +9,47 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class ShopTest {
 
+    public static final String NAME_OF_BOTTLE_OF_WATER = "Bottle of water";
+    public static final int PRICE_OF_WATER = 2;
+    public static final Item BOTTLE_OF_WATER = new Item(NAME_OF_BOTTLE_OF_WATER, PRICE_OF_WATER);
     private Shop shop;
 
-    @Before
+    private List<Item> listOfItems;
+
+    @Before //Method annotated like this will be called before every test
     public void setUp() throws Exception {
+        listOfItems = new ArrayList<>();
+        shop = new Shop(listOfItems);
     }
 
     @Test //This annotation mark our method as a test.
-    public void shouldCreateNonNullObject(){
-        shop = new Shop(null);
+    public void shouldCreateNonNullObject() {
         assertThat(shop).isNotNull();
     }
 
     @Test
-    public void shouldBeAbleToAddProductsToShop(){
-        List<Item> listOfItems = new ArrayList<Item>();
-        shop = new Shop(listOfItems);
-        Item bottleOfWater = new Item("Bottle of water", 2);
+    public void shouldBeAbleToAddProductsToShop() {
+        shop.addProduct(BOTTLE_OF_WATER);
 
-        shop.addProduct(bottleOfWater);
         assertThat(listOfItems.get(0)).isNotNull();
-
     }
 
+    @Test
+    public void shouldRemoveItemWhenItWasSold(){
+        shop.addProduct(BOTTLE_OF_WATER);
+
+        Item result = shop.sellItem(NAME_OF_BOTTLE_OF_WATER);
+
+        assertThat(result).isEqualTo(BOTTLE_OF_WATER);
+        assertThat(listOfItems).doesNotContain(BOTTLE_OF_WATER);
+    }
+
+    @Test
+    public void shouldReturnNullWhenItemNotExists(){
+        Item result = shop.sellItem(NAME_OF_BOTTLE_OF_WATER);
+
+        assertThat(result).isNull();
+    }
 
 
 }

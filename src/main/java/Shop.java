@@ -7,8 +7,18 @@ public class Shop {
         this.listOfItems = listOfItems;
     }
 
-    public void addProduct(Item bottleOfWater) {
-        listOfItems.add(bottleOfWater);
+    public void addProduct(Item item) {
+        listOfItems.add(item);
     }
 
+    public Item sellItem(String nameOdSoldItem) {
+        Item result = null;
+        for(Item item: listOfItems){
+            if(item.getName().equals(nameOdSoldItem)){
+                result = item;
+            }
+        }
+        listOfItems.remove(result);
+        return result;
+    }
 }
