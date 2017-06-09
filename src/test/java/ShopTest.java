@@ -8,6 +8,8 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+//I just write it to make a push
+
 
 public class ShopTest {
 
@@ -38,6 +40,7 @@ public class ShopTest {
 
         assertThat(listOfItems.get(0)).isNotNull();
     }
+
 
     @Test
     public void shouldRemoveItemWhenItWasSold(){
