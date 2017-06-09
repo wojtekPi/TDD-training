@@ -9,6 +9,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 //I just write it to make a push
+//another empty push, just to check if everything is working fine
 
 
 public class ShopTest {
