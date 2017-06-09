@@ -2,7 +2,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
+import sun.plugin.dom.exception.InvalidStateException;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,6 +65,41 @@ public class ShopTest {
         Item result = shop.sellItem(NAME_OF_BOTTLE_OF_WATER);
 
         Mockito.verify(ourDatabase).saveItem(ArgumentMatchers.any(Item.class));
+    }
+
+    @Test
+    public void shouldReturnTrueWhenItemWasSold() throws IOException {
+        Mockito.when(ourDatabase.isInDatabase(BOTTLE_OF_WATER)).thenReturn(true);
+
+        boolean result = shop.wasItemSold(BOTTLE_OF_WATER);
+
+        Mockito.verify(ourDatabase).isInDatabase(BOTTLE_OF_WATER);
+        assertThat(result).isTrue();
+    }
+
+    @Test
+    public void shouldReturnFalseWhenItemWasNotSold(){
+        boolean result = shop.wasItemSold(BOTTLE_OF_WATER);
+
+        assertThat(result).isFalse();
+    }
+
+    @Test
+    public void shouldReturnFalseWhenIsInDatabaseReturnFalse() throws IOException {
+        Mockito.when(ourDatabase.isInDatabase(BOTTLE_OF_WATER)).thenReturn(false);
+
+        boolean result =shop.wasItemSold(BOTTLE_OF_WATER);
+
+        assertThat(result).isFalse();
+
+    }
+
+    @Test(expected = InvalidStateException.class)
+    public void shouldThrowExceptionWhenConnectionToDBisLost() throws IOException {
+        Mockito.when(ourDatabase.isInDatabase(ArgumentMatchers.any(Item.class)))
+                .thenThrow(IOException.class);
+
+        shop.wasItemSold(BOTTLE_OF_WATER);
     }
 
 
