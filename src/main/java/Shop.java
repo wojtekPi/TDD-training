@@ -1,4 +1,3 @@
-import sun.plugin.dom.exception.InvalidStateException;
 
 import java.io.IOException;
 import java.util.List;
@@ -34,7 +33,7 @@ public class Shop {
         try {
             result = ourDatabase.isInDatabase(item);
         } catch (IOException exception){
-            throw new InvalidStateException("DB connection is lost.");
+            throw new IllegalStateException("DB connection is lost.");
         }
         return result;
     }

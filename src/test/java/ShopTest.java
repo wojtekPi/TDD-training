@@ -2,7 +2,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
-import sun.plugin.dom.exception.InvalidStateException;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -94,7 +93,7 @@ public class ShopTest {
 
     }
 
-    @Test(expected = InvalidStateException.class)
+    @Test(expected = IllegalStateException.class)
     public void shouldThrowExceptionWhenConnectionToDBisLost() throws IOException {
         Mockito.when(ourDatabase.isInDatabase(ArgumentMatchers.any(Item.class)))
                 .thenThrow(IOException.class);
