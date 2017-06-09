@@ -11,7 +11,7 @@ public class ShopTestCase {
 
     @Test
     public void shoulBeCreated(){
-        assertThat(new Shop(null, null)).isNotNull();
+        assertThat(new Shop(null, null, null)).isNotNull();
     }
 
 }

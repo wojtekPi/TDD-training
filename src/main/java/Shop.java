@@ -6,11 +6,12 @@ import java.util.List;
 public class Shop {
     private final List<Item> listOfItems;
     private final SoldItemsDBI ourDatabase;
+    private final DiscountCheckerServiceI ourDiscountChecker;
 
-
-    public Shop(List<Item> listOfItems, SoldItemsDBI ourDatabase) {
+    public Shop(List<Item> listOfItems, SoldItemsDBI ourDatabase, DiscountCheckerServiceI ourDiscountChecker) {
         this.listOfItems = listOfItems;
         this.ourDatabase = ourDatabase;
+        this.ourDiscountChecker = ourDiscountChecker;
     }
 
     public void addProduct(Item item) {
@@ -41,6 +42,6 @@ public class Shop {
 
     public int isAnyExtraDiscount(String itemName){
 
-        return -1;
+        return ourDiscountChecker.howMuchDiscount(new Item(itemName, 3));
     }
 }

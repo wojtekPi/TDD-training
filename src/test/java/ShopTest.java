@@ -1,5 +1,6 @@
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Answers;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import sun.plugin.dom.exception.InvalidStateException;
@@ -21,12 +22,14 @@ public class ShopTest {
     private List<Item> listOfItems;
 
     private SoldItemsDBI ourDatabase;
+    private DiscountCheckerServiceI ourDiscountChecker;
 
     @Before //Method annotated like this will be called before every test
     public void setUp() throws Exception {
         listOfItems = new ArrayList<>();
         ourDatabase = Mockito.mock(SoldItemsDBI.class);
-        shop = new Shop(listOfItems, ourDatabase);
+        shop = new Shop(listOfItems, ourDatabase, ourDiscountChecker);
+        ourDiscountChecker = Mockito.mock(DiscountCheckerServiceI.class);
     }
 
     @Test //This annotation mark our method as a test.
@@ -102,7 +105,23 @@ public class ShopTest {
         shop.wasItemSold(BOTTLE_OF_WATER);
     }
 
+    @Test
+    public void shouldReturnMinusOneWhenDiscountCheckerReturnsMinusOne(){
+        Mockito.when(ourDiscountChecker.howMuchDiscount(ArgumentMatchers.any(Item.class))).thenReturn(-1);
+        int result = shop.isAnyExtraDiscount(NAME_OF_BOTTLE_OF_WATER);
 
+        assertThat(result).isEqualTo(-1);
+
+    }
+
+    @Test
+    public void shouldReturnPositiveValueWhenDiscountCheckerReturnsPositiveValue(){
+        Mockito.when(ourDiscountChecker.howMuchDiscount(ArgumentMatchers.any(Item.class))).thenReturn(1);
+        int result = shop.isAnyExtraDiscount(NAME_OF_BOTTLE_OF_WATER);
+
+        assertThat(result).isEqualTo(1);
+
+    }
 
 
 }
