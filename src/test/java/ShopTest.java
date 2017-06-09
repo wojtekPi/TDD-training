@@ -1,5 +1,7 @@
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentMatchers;
+import org.mockito.Mockito;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,10 +18,13 @@ public class ShopTest {
 
     private List<Item> listOfItems;
 
+    private SoldItemsDBI ourDatabase;
+
     @Before //Method annotated like this will be called before every test
     public void setUp() throws Exception {
         listOfItems = new ArrayList<>();
-        shop = new Shop(listOfItems);
+        ourDatabase = Mockito.mock(SoldItemsDBI.class);
+        shop = new Shop(listOfItems, ourDatabase);
     }
 
     @Test //This annotation mark our method as a test.
@@ -49,6 +54,15 @@ public class ShopTest {
         Item result = shop.sellItem(NAME_OF_BOTTLE_OF_WATER);
 
         assertThat(result).isNull();
+    }
+
+    @Test
+    public void shouldSaveSoldItemToDatabaseWhenSellItemCalled(){
+        shop.addProduct(BOTTLE_OF_WATER);
+
+        Item result = shop.sellItem(NAME_OF_BOTTLE_OF_WATER);
+
+        Mockito.verify(ourDatabase).saveItem(ArgumentMatchers.any(Item.class));
     }
 
 
