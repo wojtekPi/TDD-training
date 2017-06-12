@@ -1,5 +1,7 @@
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 
@@ -20,6 +22,9 @@ public class ShopTest {
     private List<Item> listOfItems;
 
     private SoldItemsDBI ourDatabase;
+
+    @Rule
+    public ExpectedException exceptionRule = ExpectedException.none();
 
     @Before //Method annotated like this will be called before every test
     public void setUp() throws Exception {
@@ -98,6 +103,17 @@ public class ShopTest {
         Mockito.when(ourDatabase.isInDatabase(ArgumentMatchers.any(Item.class)))
                 .thenThrow(IOException.class);
 
+        shop.wasItemSold(BOTTLE_OF_WATER);
+    }
+
+
+    @Test//Example with testing exception using rule mechanism.
+    public void shouldThrowExceptionWhenConnectionToDBisLostUsingRules() throws IOException {
+        Mockito.when(ourDatabase.isInDatabase(ArgumentMatchers.any(Item.class)))
+                .thenThrow(IOException.class);
+
+        exceptionRule.expect(IllegalStateException.class);
+        exceptionRule.expectMessage("DB connection is lost.");
         shop.wasItemSold(BOTTLE_OF_WATER);
     }
 
