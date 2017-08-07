@@ -4,4 +4,3 @@ jdk:
 script:
   - mvn cobertura:cobertura
   - bash <(curl -s https://codecov.io/bash)
-  - mvn verify
